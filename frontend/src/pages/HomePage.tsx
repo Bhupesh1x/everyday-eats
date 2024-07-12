@@ -1,10 +1,14 @@
 import Layout from "../layouts/Layout";
 
+import { Hero } from "../components/Hero";
+import { Info } from "../components/HomePage/Info";
+
 function HomePage() {
   return (
     <Layout>
-      <div className="container">
-        <h1>HomePage</h1>
+      <Hero />
+      <div className="container pb-10">
+        <Info />
       </div>
     </Layout>
   );
