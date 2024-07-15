@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import "dotenv/config";
 
 import connectDb from "./lib/connectDb";
@@ -10,6 +11,7 @@ const app = express();
 
 connectDb();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

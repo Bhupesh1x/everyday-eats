@@ -127,3 +127,15 @@ export const login = async (req: Request, res: Response) => {
     return errorMessage(res);
   }
 };
+
+export const userSession = async (req: Request, res: Response) => {
+  res.send({ userId: req?.userId });
+};
+
+export const logout = async (req: Request, res: Response) => {
+  res
+    .cookie("everyday-eats-token", "", {
+      expires: new Date(0),
+    })
+    .json({ message: "User Logedout successfully" });
+};
