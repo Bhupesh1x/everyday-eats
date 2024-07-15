@@ -1,6 +1,6 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
 import nodemailer from "nodemailer";
 import { Response } from "express";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 export const errorMessage = (
   res: Response,
@@ -70,4 +70,18 @@ export const verifyEmailToken = async ({
     console.log("VerifyEmailToken-error", error);
     return false;
   }
+};
+
+export const sendToken = async (res: Response, userId: string) => {
+  const token = await jwt.sign({ userId }, process.env.JWT_SECRET!, {
+    expiresIn: "1d",
+  });
+
+  res
+    .cookie("everyday-eats-token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 86400000,
+    })
+    .json({ message: "User logged in successfully" });
 };
