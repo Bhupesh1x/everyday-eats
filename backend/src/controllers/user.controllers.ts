@@ -2,7 +2,12 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
-import { errorMessage, sendEmail, verifyEmailToken } from "../lib/utils";
+import {
+  errorMessage,
+  sendEmail,
+  sendToken,
+  verifyEmailToken,
+} from "../lib/utils";
 
 import { User } from "../models/user.model";
 
@@ -85,6 +90,40 @@ export const verifyUserEmail = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log("verify-error", error);
+    return errorMessage(res);
+  }
+};
+
+export const login = async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select([
+      "password",
+      "isVerified",
+    ]);
+
+    if (!user) {
+      return errorMessage(res, "Invalid credentials", 400);
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordCorrect) {
+      return errorMessage(res, "Invalid credentials", 400);
+    }
+
+    if (!user.isVerified) {
+      return errorMessage(
+        res,
+        "An email sent to your account. Please verify before logging in.",
+        400
+      );
+    }
+
+    await sendToken(res, user._id?.toString());
+  } catch (error) {
+    console.log("login-error", error);
     return errorMessage(res);
   }
 };
