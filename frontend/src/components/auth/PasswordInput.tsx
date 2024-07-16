@@ -48,15 +48,19 @@ function PasswordInput({
         >
           {/* A ternary operator is used for showing different images based on the password visibility */}
           {isPasswordVisible ? (
-            <EyeOff
-              className="text-secondary h-5 w-6"
-              xlinkTitle="Hide password"
-            />
+            <span title="Hide password">
+              <EyeOff
+                className="text-gray-400 h-5 w-6"
+                xlinkTitle="Hide password"
+              />
+            </span>
           ) : (
-            <Eye
-              className="text-secondary h-5 w-6"
-              xlinkTitle="Show password"
-            />
+            <span title="Show password">
+              <Eye
+                className="text-gray-400 h-5 w-6"
+                xlinkTitle="Show password"
+              />
+            </span>
           )}
         </button>
       </div>

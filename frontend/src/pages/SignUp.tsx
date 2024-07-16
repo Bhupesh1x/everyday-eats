@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { useSignUp } from "../features/auth/api/useSignUp";
 
 import { Button } from "../components/ui/button";
 
@@ -11,17 +13,29 @@ function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
 
-  const navigate = useNavigate();
+  const mutation = useSignUp();
 
-  async function handleSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+  async function onSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    mutation.mutate(
+      { name, email, password },
+      {
+        onSuccess: () => {
+          setShowMessage(true);
+          setName("");
+          setEmail("");
+          setPassword("");
+        },
+      }
+    );
   }
 
   return (
     <div className="h-full flex items-center justify-center bg-primary/10">
-      <div className="translate h-auto border-0 rounded-lg card-shadow relative flex flex-col w-[90%] md:w-[70%] lg:w-[32%] bg-white outline-none focus:outline-none py-6 px-6">
+      <div className="translate h-auto border-0 rounded-lg card-shadow relative flex flex-col w-[90%] md:w-[70%] lg:w-[40%] bg-white outline-none focus:outline-none py-6 px-6">
         <h2 className="text-xl font-bold text-gray-800 leading-7">
           Create your account
         </h2>
@@ -29,7 +43,7 @@ function SignUp() {
           To continue to <span className="text-primary">Everyday-Eats</span>
         </p>
 
-        <form onSubmit={handleSubmit} className="my-6 space-y-4">
+        <form onSubmit={onSubmit} className="my-6 space-y-4">
           <div>
             <label htmlFor="name" className="input-label">
               Name <RequiredLabel />
@@ -62,17 +76,20 @@ function SignUp() {
             value={password}
             onChange={(value) => setPassword(value)}
           />
-          <p
-            className="ml-auto text-right text-sm text-primary w-full cursor-pointer hover:text-primary/90 transition hover:underline"
-            onClick={() => navigate("/forgot-password")}
-          >
-            Forgot password?
-          </p>
+
+          {!!showMessage && (
+            <p className="my-4 bg-primary/20 p-2 rounded-md font-normal text-primary/90">
+              Thanks for creating your account. Verify your email by clicking on
+              the link sent to your email so you can get up and running quickly.
+            </p>
+          )}
+
           <Button
-            className="bg-primary hover:bg-primary/80 transition text-white"
+            className="bg-primary hover:bg-primary/80 transition text-white disabled:cursor-not-allowed disabled:bg-gray-400"
             type="submit"
+            disabled={mutation.isLoading}
           >
-            {isLoading ? (
+            {mutation.isLoading ? (
               <>
                 <Loader2 className="animate-spin text-white" />
               </>
