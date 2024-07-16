@@ -2,14 +2,15 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 
 type Props = {
+  showLinks?: boolean;
   children: React.ReactNode;
 };
 
-function Layout({ children }: Props) {
+function Layout({ children, showLinks = true }: Props) {
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      <div className="flex-1 h-full">{children}</div>
+    <div className="h-screen flex flex-col">
+      <Header showLinks={showLinks} />
+      <div className="flex-1">{children}</div>
       <Footer />
     </div>
   );
