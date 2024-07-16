@@ -2,12 +2,16 @@ import { Link } from "react-router-dom";
 
 import { Button } from "../ui/button";
 
-export const MainNav = () => {
+type Props = {
+  isLoggedIn: boolean;
+};
+
+export const MainNav = ({ isLoggedIn }: Props) => {
   return (
     <>
       <Link to="/sign-in">
         <Button variant="ghost" className="hover:text-primary transition">
-          Log In
+          {isLoggedIn ? "Log Out" : "Log In"}
         </Button>
       </Link>
     </>

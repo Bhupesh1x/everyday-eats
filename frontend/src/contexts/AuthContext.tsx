@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { useGetSession } from "../features/auth/api/useGetSession";
 
 type AuthContextType = {
   isLoggedIn: boolean;
@@ -11,17 +12,24 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  return useContext(AuthContext) as AuthContextType;
 };
 
 type Props = {
   children: React.ReactNode;
 };
 
-export const AuthProvide = ({ children }: Props) => {
+export const AuthContextProvider = ({ children }: Props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [userId, setUserId] = useState(null);
+
+  const { data, isError } = useGetSession();
+
+  useEffect(() => {
+    setIsLoggedIn(!isError);
+    setUserId(data?.userId || null);
+  }, [data, isError]);
 
   return (
     <AuthContext.Provider value={{ userId, isLoggedIn }}>

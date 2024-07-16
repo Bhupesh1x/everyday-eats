@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 import { API_BASE_URL } from "../../../lib/utils";
 
@@ -9,6 +9,8 @@ type RequestType = {
 };
 
 export const useSignIn = () => {
+  const queryClient = useQueryClient();
+
   const mutation = useMutation<string, Error, RequestType>({
     mutationFn: async (json) => {
       const response = await fetch(`${API_BASE_URL}/api/user/login`, {
@@ -29,6 +31,7 @@ export const useSignIn = () => {
     },
     onSuccess: () => {
       toast.success("Logged In successfull.");
+      queryClient.invalidateQueries({ queryKey: ["get-session"] });
     },
     onError: (error) => {
       toast.error(error?.message || "Someting went wrong");
