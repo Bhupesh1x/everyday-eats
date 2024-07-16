@@ -2,11 +2,11 @@ import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { useVerifyEmail } from "../features/auth/api/useVerifyEmail";
-
 import Layout from "../layouts/Layout";
 
 import { Button } from "../components/ui/button";
+
+import { useVerifyEmail } from "../features/auth/api/useVerifyEmail";
 
 function VerifyEmail() {
   const [isVerified, setIsVerified] = useState(false);

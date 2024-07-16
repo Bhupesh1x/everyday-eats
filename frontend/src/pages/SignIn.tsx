@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { useSignIn } from "../features/auth/api/useSignIn";
-
 import { Button } from "../components/ui/button";
 
 import RequiredLabel from "../components/auth/RequiredLabel";
 import PasswordInput from "../components/auth/PasswordInput";
+
+import { useSignIn } from "../features/auth/api/useSignIn";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -59,13 +59,6 @@ function SignIn() {
             value={password}
             onChange={(value) => setPassword(value)}
           />
-
-          {/* {!!showMessage && (
-            <p className="my-4 bg-primary/20 p-2 rounded-md font-normal text-primary/90">
-              Thanks for creating your account. Verify your email by clicking on
-              the link sent to your email so you can get up and running quickly.
-            </p>
-          )} */}
 
           <Button
             className="bg-primary hover:bg-primary/80 transition text-white"

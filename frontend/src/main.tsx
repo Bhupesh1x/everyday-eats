@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import "./globals.css";
 
 import AppRouter from "./AppRouter";
+
 import { AuthContextProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient({

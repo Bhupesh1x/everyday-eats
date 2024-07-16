@@ -1,4 +1,5 @@
 import { ComponentType, lazy, Suspense } from "react";
+
 import { Loader } from "../components/Loader";
 
 // Defined a function that takes a component and returns a lazy loaded version of it
