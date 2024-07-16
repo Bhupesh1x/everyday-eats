@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import "dotenv/config";
@@ -11,6 +12,12 @@ const app = express();
 
 connectDb();
 
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL!,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
