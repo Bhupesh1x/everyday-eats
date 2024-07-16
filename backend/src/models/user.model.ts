@@ -2,11 +2,14 @@ import mongoose from "mongoose";
 
 type UserType = {
   _id: string;
+  city?: string;
   name: string;
   email: string;
+  avatar?: string;
+  address?: string;
+  country?: string;
   password: string;
   isVerified: boolean;
-  avatar?: string;
 };
 
 const userSchema = new mongoose.Schema({
@@ -31,6 +34,15 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
     select: false,
+  },
+  address: {
+    type: String,
+  },
+  city: {
+    type: String,
+  },
+  country: {
+    type: String,
   },
 });
 
