@@ -11,7 +11,7 @@ const VerifyEmailPage = LazyLoad(() => import("./pages/VerifyEmail"));
 const UserProfilePage = LazyLoad(() => import("./pages/UserProfile"));
 
 function AppRouter() {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLoading } = useAuth();
 
   return (
     <Routes>
@@ -31,7 +31,7 @@ function AppRouter() {
         </>
       )}
 
-      <Route path="*" element={<Navigate to="/" />} />
+      {!isLoading && <Route path="*" element={<Navigate to="/" />} />}
     </Routes>
   );
 }

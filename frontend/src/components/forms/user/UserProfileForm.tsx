@@ -1,6 +1,5 @@
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
+import { UseFormReturn } from "react-hook-form";
 
 import {
   Form,
@@ -8,41 +7,42 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "../../ui/form";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 
 import { LoadingButton } from "../../LoadingButton";
+import { FormData } from "../../../pages/UserProfile";
 
-const formSchema = z.object({
-  email: z.string().optional(),
-  name: z.string().min(2, "Name should atleast have 2 characters"),
-  address: z.string().min(6, "Address should be atleast have 6 characters"),
-  city: z.string().min(3, "City should be atleast have 3 characters"),
-  country: z.string().min(3, "Country should be atleast have 3 characters"),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { useGetUserDetails } from "../../../features/user/userQuery";
 
 type Props = {
-  onSave: (formData: FormData) => void;
   isLoading: boolean;
+  onSave: (formData: FormData) => void;
+  form: UseFormReturn<FormData, any, undefined>;
 };
 
-const UserProfileForm = ({ isLoading, onSave }: Props) => {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
-  });
+const UserProfileForm = ({ form, isLoading, onSave }: Props) => {
+  const { data: userDetails } = useGetUserDetails();
+
+  useEffect(() => {
+    if (userDetails) {
+      form.reset({
+        ...userDetails,
+      });
+    }
+  }, [userDetails]);
 
   return (
-    <div className="lg:m-10 m-3 lg:p-10 p-5 bg-gray-200 rounded-md">
+    <div className="lg:m-10 m-3 lg:p-10 p-5 bg-slate-300 rounded-md">
       <h1 className="text-2xl font-bold">User Profile</h1>
       <p className="text-sm text-muted-foreground">
         View and change your profile information here.
       </p>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSave)} className="space-y-4 mt-8">
+        <form onSubmit={form.handleSubmit(onSave)} className="space-y-4 mt-4">
           <FormField
             control={form.control}
             name="email"
@@ -69,6 +69,7 @@ const UserProfileForm = ({ isLoading, onSave }: Props) => {
                     placeholder="Enter your name"
                   />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -87,6 +88,7 @@ const UserProfileForm = ({ isLoading, onSave }: Props) => {
                       placeholder="Enter your address"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -103,6 +105,7 @@ const UserProfileForm = ({ isLoading, onSave }: Props) => {
                       placeholder="Enter your city"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -119,6 +122,7 @@ const UserProfileForm = ({ isLoading, onSave }: Props) => {
                       placeholder="Enter your country"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

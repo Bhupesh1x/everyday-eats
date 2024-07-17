@@ -3,12 +3,14 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useGetSession } from "../features/auth/api/useGetSession";
 
 type AuthContextType = {
+  isLoading: boolean;
   isLoggedIn: boolean;
   userId?: string | null;
 };
 
 const AuthContext = createContext<AuthContextType>({
-  isLoggedIn: false,
+  isLoading: false,
+  isLoggedIn: true,
   userId: null,
 });
 
@@ -25,7 +27,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 
   const [userId, setUserId] = useState(null);
 
-  const { data, isError } = useGetSession();
+  const { data, isError, isLoading } = useGetSession();
 
   useEffect(() => {
     setIsLoggedIn(!isError);
@@ -33,7 +35,7 @@ export const AuthContextProvider = ({ children }: Props) => {
   }, [data, isError]);
 
   return (
-    <AuthContext.Provider value={{ userId, isLoggedIn }}>
+    <AuthContext.Provider value={{ userId, isLoggedIn, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
