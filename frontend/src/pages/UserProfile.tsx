@@ -36,7 +36,14 @@ function UserProfile() {
 
   const onSave = (data: FormData) => {
     if (form.formState.isDirty) {
-      mutation.mutate({ ...data });
+      mutation.mutate(
+        { ...data },
+        {
+          onError: () => {
+            form.reset();
+          },
+        }
+      );
     }
   };
 
