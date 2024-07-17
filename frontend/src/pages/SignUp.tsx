@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { useSignUp } from "../features/auth/api/useSignUp";
 
 import { Button } from "../components/ui/button";
+import { LoadingButton } from "../components/LoadingButton";
 
 import RequiredLabel from "../components/auth/RequiredLabel";
 import PasswordInput from "../components/auth/PasswordInput";
@@ -84,19 +84,11 @@ function SignUp() {
             </p>
           )}
 
-          <Button
-            className="bg-primary hover:bg-primary/80 transition text-white disabled:cursor-not-allowed disabled:bg-gray-400"
-            type="submit"
-            disabled={mutation.isLoading}
-          >
-            {mutation.isLoading ? (
-              <>
-                <Loader2 className="animate-spin text-white" />
-              </>
-            ) : (
-              "Continue"
-            )}
-          </Button>
+          {mutation.isLoading ? (
+            <LoadingButton />
+          ) : (
+            <Button type="submit">Continue</Button>
+          )}
         </form>
         <p className="text-sm text-gray-500 mt-3">
           Already have an account?{" "}

@@ -22,10 +22,11 @@ export const UserDropdown = ({ onLogout }: Props) => {
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex flex-col gap-3 min-w-[200px] mr-5">
-        <Link to="/user-profile"></Link>
-        <p className="p-2 font-normal text-neutral-700 rounded-md hover:bg-gray-200 hover:text-primary transition cursor-pointer">
-          User Profile
-        </p>
+        <Link to="/user-profile">
+          <p className="p-2 font-normal text-neutral-700 rounded-md hover:bg-gray-200 hover:text-primary transition cursor-pointer">
+            User Profile
+          </p>
+        </Link>
         <Link to="/my-restaurant">
           <p className="p-2 font-normal text-neutral-700 rounded-md hover:bg-gray-200 hover:text-primary transition cursor-pointer">
             My Restaurnat
