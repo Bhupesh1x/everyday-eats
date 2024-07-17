@@ -61,8 +61,9 @@ function SignIn() {
           />
 
           <Button
-            className="bg-primary hover:bg-primary/80 transition text-white"
+            className="bg-primary hover:bg-primary/80 transition text-white disabled:cursor-not-allowed disabled:bg-gray-500"
             type="submit"
+            disabled={mutation.isLoading}
           >
             {mutation.isLoading ? (
               <>
