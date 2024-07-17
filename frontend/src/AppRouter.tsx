@@ -1,7 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import LazyLoad from "./lib/LazyLoading";
-import { useAuth } from "./contexts/AuthContext";
+import ProtectedRoute from "./ProtectedRoute";
 
 const HomePage = LazyLoad(() => import("./pages/HomePage"));
 const SignInPage = LazyLoad(() => import("./pages/SignIn"));
@@ -11,8 +11,6 @@ const VerifyEmailPage = LazyLoad(() => import("./pages/VerifyEmail"));
 const UserProfilePage = LazyLoad(() => import("./pages/UserProfile"));
 
 function AppRouter() {
-  const { isLoggedIn, isLoading } = useAuth();
-
   return (
     <Routes>
       <Route path="/sign-in" element={<SignInPage />} />
@@ -25,13 +23,11 @@ function AppRouter() {
       <Route path="/" element={<HomePage />} />
       <Route path="/search" element={<SearchPage />} />
 
-      {isLoggedIn && (
-        <>
-          <Route path="/user-profile" element={<UserProfilePage />} />
-        </>
-      )}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/user-profile" element={<UserProfilePage />} />
+      </Route>
 
-      {!isLoading && <Route path="*" element={<Navigate to="/" />} />}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }

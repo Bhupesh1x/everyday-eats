@@ -1,7 +1,7 @@
+import { toast } from "sonner";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import { getUserDetailsApi, updateUserDetailsApi } from "./userApi";
-import { toast } from "sonner";
 
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
