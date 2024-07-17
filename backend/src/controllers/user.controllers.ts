@@ -128,14 +128,53 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-export const userSession = async (req: Request, res: Response) => {
+export const userSession = (req: Request, res: Response) => {
   res.send({ userId: req?.userId });
 };
 
-export const logout = async (req: Request, res: Response) => {
+export const logout = (req: Request, res: Response) => {
   res
     .cookie("everyday-eats-token", "", {
       expires: new Date(0),
     })
     .json({ message: "User Logedout successfully" });
+};
+
+export const getCurrentUserDetail = async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return errorMessage(res, "User not found", 404);
+    }
+
+    return res.json(user);
+  } catch (error) {
+    console.log("getCurrentUserDetail-error", error);
+    return errorMessage(res);
+  }
+};
+
+export const updateUserDetails = async (req: Request, res: Response) => {
+  try {
+    const { name, address, city, country } = req.body;
+
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return errorMessage(res, "User not found", 404);
+    }
+
+    user.name = name;
+    user.address = address;
+    user.city = city;
+    user.country = country;
+
+    await user.save();
+
+    return res.json(user);
+  } catch (error) {
+    console.log("updateUserDetails-error", error);
+    return errorMessage(res);
+  }
 };
