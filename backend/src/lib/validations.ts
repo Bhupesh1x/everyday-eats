@@ -44,3 +44,15 @@ export const verifyEmailValidations = [
   }),
   handleValidationErrors,
 ];
+
+export const updateUserValidations = [
+  check("name", "name is required").ltrim().isLength({ min: 2 }),
+  check("address", "Address should be atleast 6 characters")
+    .ltrim()
+    .isLength({ min: 6 }),
+
+  check("city", "City is required").ltrim().isLength({ min: 3 }),
+
+  check("country", "Country is required").ltrim().isLength({ min: 3 }),
+  handleValidationErrors,
+];
