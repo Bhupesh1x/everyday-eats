@@ -10,7 +10,7 @@ export const errorMessage = (
   const errMessage = message || "Internal server error";
   const statusCode = code || 500;
 
-  return res.status(statusCode).json({ errMessage });
+  return res.status(statusCode).json({ message: errMessage });
 };
 
 export const sendEmail = async (
