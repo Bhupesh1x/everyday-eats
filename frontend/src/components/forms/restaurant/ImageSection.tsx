@@ -14,6 +14,8 @@ export const ImageSection = () => {
 
   const imageFile = watch("imageFile");
 
+  const imageUrl = watch("imageUrl");
+
   return (
     <div>
       <FormHeading
@@ -37,14 +39,25 @@ export const ImageSection = () => {
                 }
               />
             </FormControl>
+
             <div
-              className="h-60 flex flex-col items-center justify-center bg-slate-200 rounded-md cursor-pointer border border-dashed border-slate-500"
+              className="h-80 flex flex-col items-center justify-center bg-slate-200 rounded-md cursor-pointer border border-dashed border-slate-500"
               onClick={() => inputRef?.current?.click()}
             >
-              <ImageIcon className="h-10 w-10 text-slate-500" />
-              <p className="font-normal text-neutral-500">
-                {imageFile ? imageFile?.name : "Choose a image"}
-              </p>
+              {imageFile ? (
+                <>
+                  <ImageIcon className="h-10 w-10 text-slate-500" />
+                  <p className="font-normal text-neutral-500">
+                    {imageFile ? imageFile?.name : "Choose a image"}
+                  </p>
+                </>
+              ) : (
+                <img
+                  src={imageUrl}
+                  alt="img"
+                  className="h-full w-full object-cover rounded-md"
+                />
+              )}
             </div>
             <FormMessage />
           </FormItem>

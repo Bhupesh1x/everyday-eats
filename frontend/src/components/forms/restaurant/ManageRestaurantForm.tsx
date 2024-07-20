@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { Button } from "../../ui/button";
@@ -8,17 +9,44 @@ import { DetailsSection } from "./DetailsSection";
 import { MenuItemSection } from "./MenuItemSection";
 import { CuisinesSection } from "./CuisinesSection";
 
+import { RestaurantType } from "../../../types";
 import { LoadingButton } from "../../LoadingButton";
 
 import { RestaurantFormData } from "../../../pages/ManageRestaurant";
 
 type Props = {
   isLoading: boolean;
+  restaurantData?: RestaurantType;
   onSave: (formData: FormData) => void;
 };
 
-export const ManageRestaurantForm = ({ isLoading, onSave }: Props) => {
+export const ManageRestaurantForm = ({
+  isLoading,
+  onSave,
+  restaurantData,
+}: Props) => {
   const form = useFormContext<RestaurantFormData>();
+
+  useEffect(() => {
+    if (!restaurantData) return;
+
+    const deliveryPriceFormated = parseInt(
+      (restaurantData.deliveryPrice / 100).toFixed(2)
+    );
+
+    const menuItemsFormated = restaurantData.menuItems.map((item) => ({
+      ...item,
+      price: parseInt((item.price / 100).toFixed(2)),
+    }));
+
+    const updatedRestaurantData = {
+      ...restaurantData,
+      menuItems: menuItemsFormated,
+      deliveryPrice: deliveryPriceFormated,
+    };
+
+    form.reset(updatedRestaurantData);
+  }, [restaurantData]);
 
   const onSubmit = (data: RestaurantFormData) => {
     const formData = new FormData();

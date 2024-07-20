@@ -6,7 +6,10 @@ import Layout from "../layouts/Layout";
 
 import { Form } from "../components/ui/form";
 
-import { useCreateRestaurant } from "../features/my-restaurant/query";
+import {
+  useCreateRestaurant,
+  useGetRestaurant,
+} from "../features/my-restaurant/query";
 
 import { ManageRestaurantForm } from "../components/forms/restaurant/ManageRestaurantForm";
 
@@ -57,6 +60,8 @@ function ManageRestaurant() {
 
   const mutation = useCreateRestaurant();
 
+  const { isLoading, data: restaurantData } = useGetRestaurant();
+
   function onSave(data: FormData) {
     mutation.mutate(data, {
       onSuccess() {
@@ -71,7 +76,8 @@ function ManageRestaurant() {
         <Form {...form}>
           <ManageRestaurantForm
             onSave={onSave}
-            isLoading={mutation.isLoading}
+            isLoading={mutation.isLoading || isLoading}
+            restaurantData={restaurantData}
           />
         </Form>
       </div>

@@ -7,3 +7,17 @@ export type UserType = {
   address?: string;
   country?: string;
 };
+
+export type RestaurantType = {
+  _id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  name: string;
+  city: string;
+  country: string;
+  deliveryPrice: number;
+  estimatedDeliveryTime: number;
+  imageUrl: string;
+  cuisines: string[];
+  menuItems: { _id: string; name: string; price: number }[];
+};
