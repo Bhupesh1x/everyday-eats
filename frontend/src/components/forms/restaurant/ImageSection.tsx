@@ -33,7 +33,7 @@ export const ImageSection = () => {
                 ref={inputRef}
                 className="hidden"
                 type="file"
-                accept=".jpg, .jpeg, .png"
+                accept=".jpg, .jpeg, .png, .webp"
                 onChange={(e) =>
                   field.onChange(e.target.files ? e.target.files[0] : null)
                 }
