@@ -12,6 +12,8 @@ import {
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 
+import { FormHeading } from "../FormHeading";
+
 import { LoadingButton } from "../../LoadingButton";
 import { FormData } from "../../../pages/UserProfile";
 
@@ -36,10 +38,10 @@ const UserProfileForm = ({ form, isLoading, onSave }: Props) => {
 
   return (
     <div className="lg:m-10 m-3 lg:p-10 p-5 bg-slate-300 rounded-md">
-      <h1 className="text-2xl font-bold">User Profile</h1>
-      <p className="text-sm text-muted-foreground">
-        View and change your profile information here.
-      </p>
+      <FormHeading
+        title="User Profile"
+        subTitle="View and change your profile information here."
+      />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSave)} className="space-y-4 mt-4">
