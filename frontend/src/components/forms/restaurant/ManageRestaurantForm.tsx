@@ -75,7 +75,9 @@ export const ManageRestaurantForm = ({
       );
     });
 
-    formData.append("imageFile", data.imageFile);
+    if (data.imageFile) {
+      formData.append("imageFile", data.imageFile);
+    }
 
     onSave(formData);
   };
