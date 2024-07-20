@@ -1,7 +1,11 @@
 import { toast } from "sonner";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
-import { createRestaurantApi, getRestaurantApi } from "./api";
+import {
+  createRestaurantApi,
+  getRestaurantApi,
+  updateMyRestaurantApi,
+} from "./api";
 
 export const useCreateRestaurant = () => {
   const mutation = useMutation({
@@ -24,4 +28,21 @@ export const useGetRestaurant = () => {
   });
 
   return query;
+};
+
+export const useUpdateRestaurant = () => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: updateMyRestaurantApi,
+    onSuccess: () => {
+      toast.success("Restaurant updated successfully");
+      queryClient.invalidateQueries(["get-my-restaurant"]);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+
+  return mutation;
 };
