@@ -31,3 +31,18 @@ export const createMyRestaurant = async (req: Request, res: Response) => {
     return errorMessage(res);
   }
 };
+
+export const getMyRestaurant = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+
+    if (!restaurant) {
+      return errorMessage(res, "Restaurant not found", 404);
+    }
+
+    return res.json(restaurant);
+  } catch (error) {
+    console.log(error);
+    return errorMessage(res);
+  }
+};

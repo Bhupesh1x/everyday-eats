@@ -1,7 +1,10 @@
 import multer from "multer";
 import express from "express";
 
-import { createMyRestaurant } from "../controllers/myrestaurant.controllers";
+import {
+  createMyRestaurant,
+  getMyRestaurant,
+} from "../controllers/myrestaurant.controllers";
 import { createRestaurantValidations } from "../lib/validations";
 import { verifyAuth } from "../middlewares/auth";
 
@@ -22,5 +25,7 @@ router.post(
   verifyAuth,
   createMyRestaurant
 );
+
+router.get("/", verifyAuth, getMyRestaurant);
 
 export default router;
