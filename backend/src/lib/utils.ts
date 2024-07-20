@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import cloudinary from "cloudinary";
 import { Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
@@ -84,4 +85,13 @@ export const sendToken = async (res: Response, userId: string) => {
       maxAge: 86400000,
     })
     .json({ message: "User logged in successfully" });
+};
+
+export const uploadFile = async (image: Express.Multer.File) => {
+  const b64Image = Buffer.from(image.buffer).toString("base64");
+  const dataURI = `data:${image.mimetype};base64,${b64Image}`;
+
+  const uploadedFile = await cloudinary.v2.uploader.upload(dataURI);
+
+  return uploadedFile.url;
 };

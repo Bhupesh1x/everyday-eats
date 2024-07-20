@@ -4,6 +4,7 @@ import express from "express";
 import {
   createMyRestaurant,
   getMyRestaurant,
+  updateMyRestaurant,
 } from "../controllers/myrestaurant.controllers";
 import { createRestaurantValidations } from "../lib/validations";
 import { verifyAuth } from "../middlewares/auth";
@@ -27,5 +28,11 @@ router.post(
 );
 
 router.get("/", verifyAuth, getMyRestaurant);
+router.put(
+  "/update",
+  upload.single("imageFile"),
+  verifyAuth,
+  updateMyRestaurant
+);
 
 export default router;
