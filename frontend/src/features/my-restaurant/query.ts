@@ -1,7 +1,7 @@
 import { toast } from "sonner";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
-import { createRestaurantApi } from "./api";
+import { createRestaurantApi, getRestaurantApi } from "./api";
 
 export const useCreateRestaurant = () => {
   const mutation = useMutation({
@@ -15,4 +15,13 @@ export const useCreateRestaurant = () => {
   });
 
   return mutation;
+};
+
+export const useGetRestaurant = () => {
+  const query = useQuery({
+    queryKey: ["get-my-restaurant"],
+    queryFn: getRestaurantApi,
+  });
+
+  return query;
 };
