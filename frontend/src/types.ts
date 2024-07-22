@@ -21,3 +21,13 @@ export type RestaurantType = {
   cuisines: string[];
   menuItems: { _id: string; name: string; price: number }[];
 };
+
+export type SearchRestaurantResponse = {
+  data: RestaurantType[];
+  pagination: {
+    page: number;
+    pageSize: number;
+    total: number;
+    totalPages: number;
+  };
+};
