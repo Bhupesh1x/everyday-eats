@@ -22,7 +22,7 @@ function AppRouter() {
       />
 
       <Route path="/" element={<HomePage />} />
-      <Route path="/search" element={<SearchPage />} />
+      <Route path="/search/:city" element={<SearchPage />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/user-profile" element={<UserProfilePage />} />

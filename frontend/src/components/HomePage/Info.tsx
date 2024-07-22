@@ -1,4 +1,15 @@
+import { useNavigate } from "react-router-dom";
+import { SearchBar, SearchFormType } from "../SearchBar";
+
 export const Info = () => {
+  const navigate = useNavigate();
+
+  function onSubmit(data: SearchFormType) {
+    navigate({
+      pathname: `/search/${data.search}`,
+    });
+  }
+
   return (
     <div className="flex flex-col gap-12">
       <div className="w-full shadow-md rounded-md py-10 text-center bg-white z-50 -mt-16">
@@ -6,6 +17,10 @@ export const Info = () => {
           Tuck into a takeaway today
         </h1>
         <p className="text-xl mt-5">Food is just a click away!</p>
+
+        <div className="mt-6">
+          <SearchBar onSubmit={onSubmit} placeholder="Search by city or town" />
+        </div>
       </div>
 
       <div className="grid md:grid-cols-2 gap-5">
