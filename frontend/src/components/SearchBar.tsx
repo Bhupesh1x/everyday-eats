@@ -8,9 +8,7 @@ import { Button } from "./ui/button";
 import { Form, FormControl, FormField, FormItem } from "./ui/form";
 
 const formSchema = z.object({
-  search: z.string({
-    required_error: "City name is required",
-  }),
+  search: z.string().trim().min(1, "city name is required"),
 });
 
 export type SearchFormType = z.infer<typeof formSchema>;
@@ -43,7 +41,9 @@ export const SearchBar = ({ onReset, onSubmit, placeholder }: Props) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex items-center border border-gray-400 shadow-md rounded-full py-1 px-3 mx-6"
+        className={`group flex items-center border border-gray-400 shadow-md rounded-full py-1 px-3 md:mx-20 mx-4 focus-within:border-primary transition ${
+          form.formState.errors?.search && "!border-red-500"
+        }`}
       >
         <Search
           strokeWidth={2.5}
