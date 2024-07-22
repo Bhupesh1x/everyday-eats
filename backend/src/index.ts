@@ -7,6 +7,7 @@ import "dotenv/config";
 import connectDb from "./lib/connectDb";
 
 import userRoutes from "./routes/user.routes";
+import restaurantRoutes from "./routes/restaurant.routes";
 import myRestaurantRoutes from "./routes/myrestaurant.routes";
 
 const PORT = process.env.PORT || 7000;
@@ -35,6 +36,7 @@ app.use("/health", (req: Request, res: Response) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/my/restaurant", myRestaurantRoutes);
 
 app.listen(PORT, () => {
