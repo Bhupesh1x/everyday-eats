@@ -1,4 +1,4 @@
-import { body, check, validationResult } from "express-validator";
+import { body, check, param, validationResult } from "express-validator";
 import { NextFunction, Request, Response } from "express";
 
 import { errorMessage } from "./utils";
@@ -93,5 +93,13 @@ export const createRestaurantValidations = [
   body("menuItems.*.price")
     .notEmpty()
     .withMessage("Menu items price is required"),
+  handleValidationErrors,
+];
+
+export const searchRestaurantValidations = [
+  param("city", "City is required and must be atleast 2 characters")
+    .ltrim()
+    .isLength({ min: 2 }),
+
   handleValidationErrors,
 ];
