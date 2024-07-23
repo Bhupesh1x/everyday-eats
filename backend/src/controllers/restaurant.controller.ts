@@ -38,7 +38,7 @@ export const searchRestaurant = async (req: Request, res: Response) => {
 
       query["$or"] = [
         { name: searchRegex },
-        { cusiness: { $in: [searchRegex] } },
+        { cuisines: { $in: [searchRegex] } },
       ];
     }
 

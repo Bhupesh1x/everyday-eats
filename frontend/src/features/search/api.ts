@@ -1,11 +1,18 @@
 import { API_BASE_URL } from "../../lib/utils";
+import { SearchState } from "../../pages/SearchPage";
 
 import { SearchRestaurantResponse } from "../../types";
 
 export const searchApi = async (
-  city: string
+  city: string,
+  searchState?: SearchState
 ): Promise<SearchRestaurantResponse> => {
-  const res = await fetch(`${API_BASE_URL}/api/restaurant/search/${city}`);
+  const params = new URLSearchParams();
+  params.set("search", searchState?.search || "");
+
+  const res = await fetch(
+    `${API_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`
+  );
 
   if (!res.ok) {
     throw new Error("Failed to get restaurants");

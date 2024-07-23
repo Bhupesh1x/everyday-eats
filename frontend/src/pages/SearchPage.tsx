@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import Layout from "../layouts/Layout";
@@ -8,11 +8,24 @@ import { useSearch } from "../features/search/queries";
 import { Loader } from "../components/Loader";
 import { SearchResultsInfo } from "../components/search/SearchResultsInfo";
 import { SearchRestaurantCard } from "../components/search/SearchRestaurantCard";
+import { SearchBar, SearchFormType } from "../components/SearchBar";
+
+export type SearchState = {
+  search?: string;
+};
 
 function SearchPage() {
+  const [searchState, setSearchState] = useState<SearchState>({
+    search: "",
+  });
+
   const params = useParams();
 
-  const { data: results, isLoading, isError } = useSearch(params.city);
+  const {
+    data: results,
+    isLoading,
+    isError,
+  } = useSearch(params.city, searchState);
 
   useEffect(() => {
     const scrollToTop = () => {
@@ -23,6 +36,20 @@ function SearchPage() {
 
     scrollToTop();
   }, []);
+
+  function onSearch(searchData: SearchFormType) {
+    setSearchState((prev) => ({
+      ...prev,
+      search: searchData.search,
+    }));
+  }
+
+  function onReset() {
+    setSearchState((prev) => ({
+      ...prev,
+      search: "",
+    }));
+  }
 
   if (isLoading) {
     return (
@@ -42,13 +69,25 @@ function SearchPage() {
             <div>Insert cuisines here</div>
 
             <div>
+              <SearchBar
+                removeMargin
+                btnText="Reset"
+                onReset={onReset}
+                onSubmit={onSearch}
+                searchValue={searchState.search}
+                placeholder="Search by Cuisine or Restaurant name"
+              />
+
               <SearchResultsInfo
                 city={params.city}
                 total={results?.pagination.total || 0}
               />
 
               {results?.data?.map((restaurant) => (
-                <SearchRestaurantCard restaurant={restaurant} />
+                <SearchRestaurantCard
+                  key={restaurant._id}
+                  restaurant={restaurant}
+                />
               ))}
             </div>
           </div>
