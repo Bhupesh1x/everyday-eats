@@ -5,7 +5,7 @@ import { Info } from "../components/HomePage/Info";
 
 function HomePage() {
   return (
-    <Layout>
+    <Layout showFooter>
       <Hero />
       <div className="container pb-10">
         <Info />

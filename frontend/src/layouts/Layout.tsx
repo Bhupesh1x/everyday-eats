@@ -3,15 +3,16 @@ import { Header } from "../components/Header";
 
 type Props = {
   showLinks?: boolean;
+  showFooter?: boolean;
   children: React.ReactNode;
 };
 
-function Layout({ children, showLinks = true }: Props) {
+function Layout({ children, showFooter = false, showLinks = true }: Props) {
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col relative">
       <Header showLinks={showLinks} />
       <div className="flex-1">{children}</div>
-      <Footer />
+      {!!showFooter && <Footer />}
     </div>
   );
 }
