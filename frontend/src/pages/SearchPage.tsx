@@ -6,17 +6,20 @@ import Layout from "../layouts/Layout";
 import { useSearch } from "../features/search/queries";
 
 import { Loader } from "../components/Loader";
+import { SearchBar, SearchFormType } from "../components/SearchBar";
+import { PaginationSelector } from "../components/PaginationSelector";
 import { SearchResultsInfo } from "../components/search/SearchResultsInfo";
 import { SearchRestaurantCard } from "../components/search/SearchRestaurantCard";
-import { SearchBar, SearchFormType } from "../components/SearchBar";
 
 export type SearchState = {
   search?: string;
+  page?: number;
 };
 
 function SearchPage() {
   const [searchState, setSearchState] = useState<SearchState>({
     search: "",
+    page: 1,
   });
 
   const params = useParams();
@@ -41,6 +44,7 @@ function SearchPage() {
     setSearchState((prev) => ({
       ...prev,
       search: searchData.search,
+      page: 1,
     }));
   }
 
@@ -48,6 +52,14 @@ function SearchPage() {
     setSearchState((prev) => ({
       ...prev,
       search: "",
+      page: 1,
+    }));
+  }
+
+  function onPageChange(page: number) {
+    setSearchState((prev) => ({
+      ...prev,
+      page,
     }));
   }
 
@@ -89,6 +101,11 @@ function SearchPage() {
                   restaurant={restaurant}
                 />
               ))}
+              <PaginationSelector
+                page={searchState.page || 1}
+                totalPages={results?.pagination?.totalPages || 1}
+                onPageChange={onPageChange}
+              />
             </div>
           </div>
         )}

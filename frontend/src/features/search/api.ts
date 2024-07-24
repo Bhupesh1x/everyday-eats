@@ -9,6 +9,7 @@ export const searchApi = async (
 ): Promise<SearchRestaurantResponse> => {
   const params = new URLSearchParams();
   params.set("search", searchState?.search || "");
+  params.set("page", searchState?.page?.toString() || "");
 
   const res = await fetch(
     `${API_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`
