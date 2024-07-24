@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,10 +15,15 @@ type Props = {
 };
 
 export const SortFilter = ({ sortOption, onSortChange }: Props) => {
+  const sortLabel = useMemo(
+    () => sortOptions.find((option) => option.value === sortOption)?.label,
+    [sortOption]
+  );
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="border border-borderPrimary p-2 rounded-md w-fit">
-        Sort: {sortOption}
+      <DropdownMenuTrigger className="border border-borderPrimary p-2 rounded-md w-fit outline-none">
+        Sort: {sortLabel}
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
