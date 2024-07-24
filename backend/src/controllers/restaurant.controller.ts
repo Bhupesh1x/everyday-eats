@@ -83,3 +83,20 @@ export const searchRestaurant = async (req: Request, res: Response) => {
     return errorMessage(res);
   }
 };
+
+export const getRestaurantById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const restaurant = await Restaurant.findById(id);
+
+    if (!restaurant) {
+      return errorMessage(res, "Restaurant not found", 404);
+    }
+
+    return res.json(restaurant);
+  } catch (error) {
+    console.log("getRestaurantById-error", error);
+    return errorMessage(res);
+  }
+};

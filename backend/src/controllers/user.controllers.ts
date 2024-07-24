@@ -137,7 +137,7 @@ export const logout = (req: Request, res: Response) => {
     .cookie("everyday-eats-token", "", {
       expires: new Date(0),
     })
-    .json({ message: "User Logedout successfully" });
+    .json({ message: "User logout successfully" });
 };
 
 export const getCurrentUserDetail = async (req: Request, res: Response) => {

@@ -1,11 +1,18 @@
 import express from "express";
 
-import { searchRestaurantValidations } from "../lib/validations";
+import {
+  getRestaurantByIdValidations,
+  searchRestaurantValidations,
+} from "../lib/validations";
 
-import { searchRestaurant } from "../controllers/restaurant.controller";
+import {
+  getRestaurantById,
+  searchRestaurant,
+} from "../controllers/restaurant.controller";
 
 const router = express.Router();
 
+router.get("/:id", getRestaurantByIdValidations, getRestaurantById);
 router.get("/search/:city", searchRestaurantValidations, searchRestaurant);
 
 export default router;

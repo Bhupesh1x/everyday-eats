@@ -103,3 +103,11 @@ export const searchRestaurantValidations = [
 
   handleValidationErrors,
 ];
+
+export const getRestaurantByIdValidations = [
+  param("id", "id is required and must be atleast 6 characters")
+    .ltrim()
+    .isLength({ min: 6 }),
+
+  handleValidationErrors,
+];
