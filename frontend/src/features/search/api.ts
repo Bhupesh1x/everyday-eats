@@ -11,6 +11,7 @@ export const searchApi = async (
   params.set("search", searchState?.search || "");
   params.set("page", searchState?.page?.toString() || "");
   params.set("cuisines", searchState?.selectedCuisines?.join(",") || "");
+  params.set("sortOptions", searchState?.sortOption || "");
 
   const res = await fetch(
     `${API_BASE_URL}/api/restaurant/search/${city}?${params.toString()}`

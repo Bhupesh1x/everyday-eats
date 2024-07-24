@@ -10,8 +10,8 @@ type Props = {
 export const SearchRestaurantCard = ({ restaurant }: Props) => {
   return (
     <Link to={`/restaurant/${restaurant._id}`} className="group">
-      <div className="border shadow-sm p-2 flex flex-col gap-4 lg:flex-row rounded-md my-6 cursor-pointer">
-        <div className="aspect-video lg:w-[40%] max-h-[150px] ">
+      <div className="border border-borderPrimary shadow-sm p-2 flex flex-col gap-4 lg:flex-row rounded-md my-6 cursor-pointer">
+        <div className="aspect-video lg:w-[40%] max-h-[150px]">
           <img
             src={restaurant.imageUrl}
             alt="restaurant-image"

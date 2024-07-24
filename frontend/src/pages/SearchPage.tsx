@@ -6,6 +6,7 @@ import Layout from "../layouts/Layout";
 import { useSearch } from "../features/search/queries";
 
 import { Loader } from "../components/Loader";
+import { SortFilter } from "../components/search/SortFilter";
 import { SearchBar, SearchFormType } from "../components/SearchBar";
 import { CuisinesFilter } from "../components/search/CuisinesFilter";
 import { PaginationSelector } from "../components/PaginationSelector";
@@ -13,8 +14,9 @@ import { SearchResultsInfo } from "../components/search/SearchResultsInfo";
 import { SearchRestaurantCard } from "../components/search/SearchRestaurantCard";
 
 export type SearchState = {
-  search?: string;
   page?: number;
+  search?: string;
+  sortOption: string;
   selectedCuisines?: string[];
 };
 
@@ -23,6 +25,7 @@ function SearchPage() {
     search: "",
     page: 1,
     selectedCuisines: [],
+    sortOption: "bestMatch",
   });
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -79,6 +82,14 @@ function SearchPage() {
     setIsExpanded((prev) => !prev);
   }
 
+  function onSortChange(sortOption: string) {
+    setSearchState((prev) => ({
+      ...prev,
+      sortOption,
+      page: 1,
+    }));
+  }
+
   if (isLoading) {
     return (
       <Layout>
@@ -111,10 +122,16 @@ function SearchPage() {
                 placeholder="Search by Cuisine or Restaurant name"
               />
 
-              <SearchResultsInfo
-                city={params.city}
-                total={results?.pagination.total || 0}
-              />
+              <div className="flex flex-col lg:items-center justify-between gap-4 mt-6 lg:flex-row">
+                <SearchResultsInfo
+                  city={params.city}
+                  total={results?.pagination.total || 0}
+                />
+                <SortFilter
+                  sortOption={searchState.sortOption}
+                  onSortChange={onSortChange}
+                />
+              </div>
 
               {results?.data?.map((restaurant) => (
                 <SearchRestaurantCard

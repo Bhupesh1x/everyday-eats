@@ -29,7 +29,7 @@ export const CuisinesFilter = ({
   }
 
   return (
-    <div className="border p-3 rounded-md h-fit">
+    <div className="border border-borderPrimary p-3 rounded-md h-fit">
       <div className="flex items-center justify-between">
         <h3 className="font-semibold tracking-tight">Filter By Cuisine</h3>
         <p
@@ -48,7 +48,9 @@ export const CuisinesFilter = ({
             return (
               <p
                 className={`border py-1.5 px-3 rounded-full flex items-center gap-2 cursor-pointer transition ${
-                  isSelected ? "border-primary text-primary" : "border-gray-300"
+                  isSelected
+                    ? "border-primary text-primary"
+                    : "border-borderPrimary"
                 }`}
                 onClick={() => handleSelect(cuisine)}
                 key={cuisine}
