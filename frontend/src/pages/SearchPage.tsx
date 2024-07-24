@@ -7,6 +7,7 @@ import { useSearch } from "../features/search/queries";
 
 import { Loader } from "../components/Loader";
 import { SearchBar, SearchFormType } from "../components/SearchBar";
+import { CuisinesFilter } from "../components/search/CuisinesFilter";
 import { PaginationSelector } from "../components/PaginationSelector";
 import { SearchResultsInfo } from "../components/search/SearchResultsInfo";
 import { SearchRestaurantCard } from "../components/search/SearchRestaurantCard";
@@ -14,13 +15,16 @@ import { SearchRestaurantCard } from "../components/search/SearchRestaurantCard"
 export type SearchState = {
   search?: string;
   page?: number;
+  selectedCuisines?: string[];
 };
 
 function SearchPage() {
   const [searchState, setSearchState] = useState<SearchState>({
     search: "",
     page: 1,
+    selectedCuisines: [],
   });
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const params = useParams();
 
@@ -63,6 +67,18 @@ function SearchPage() {
     }));
   }
 
+  function onCuiniseChange(cuisines: string[]) {
+    setSearchState((prev) => ({
+      ...prev,
+      selectedCuisines: cuisines,
+      page: 1,
+    }));
+  }
+
+  function onExpandChange() {
+    setIsExpanded((prev) => !prev);
+  }
+
   if (isLoading) {
     return (
       <Layout>
@@ -77,8 +93,13 @@ function SearchPage() {
         {isError || !params.city ? (
           <p className="text-center text-2xl my-10">No restaurant found</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-5 container py-4">
-            <div>Insert cuisines here</div>
+          <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-5 container py-8">
+            <CuisinesFilter
+              isExpanded={isExpanded}
+              onChange={onCuiniseChange}
+              onChangeExpand={onExpandChange}
+              selectedCuisines={searchState.selectedCuisines || []}
+            />
 
             <div>
               <SearchBar
