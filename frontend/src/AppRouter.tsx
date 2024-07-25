@@ -9,6 +9,7 @@ const SignUpPage = LazyLoad(() => import("./pages/SignUp"));
 const SearchPage = LazyLoad(() => import("./pages/SearchPage"));
 const VerifyEmailPage = LazyLoad(() => import("./pages/VerifyEmail"));
 const UserProfilePage = LazyLoad(() => import("./pages/UserProfile"));
+const RestaurantDetails = LazyLoad(() => import("./pages/RestaurantDetails"));
 const ManageRestaurantPage = LazyLoad(() => import("./pages/ManageRestaurant"));
 
 function AppRouter() {
@@ -23,6 +24,7 @@ function AppRouter() {
 
       <Route path="/" element={<HomePage />} />
       <Route path="/search/:city" element={<SearchPage />} />
+      <Route path="/restaurant/:id" element={<RestaurantDetails />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/user-profile" element={<UserProfilePage />} />
