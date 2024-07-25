@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { Button } from "../components/ui/button";
 import { LoadingButton } from "../components/LoadingButton";
@@ -13,6 +13,7 @@ function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const location = useLocation();
   const navigate = useNavigate();
 
   const mutation = useSignIn();
@@ -26,7 +27,11 @@ function SignIn() {
         onSuccess: () => {
           setEmail("");
           setPassword("");
-          navigate("/");
+          navigate(
+            location.state && location.state.from
+              ? `${location.state.from}`
+              : "/"
+          );
         },
       }
     );
