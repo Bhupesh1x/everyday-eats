@@ -8,6 +8,7 @@ import { Separator } from "../ui/separator";
 import { useAuth } from "../../contexts/AuthContext";
 
 import { CartItem } from "../../pages/RestaurantDetails";
+import { CheckoutButton } from "./CheckoutButton";
 
 type Props = {
   restaurantId: string;
@@ -78,9 +79,7 @@ export const OrderSummary = ({
       <Separator className="m-0 p-0" />
 
       {isLoggedIn && !isLoading ? (
-        <Button className="w-full" disabled={!cartItems.length}>
-          Go To Checkout
-        </Button>
+        <CheckoutButton disabled={!cartItems.length} />
       ) : (
         <Button className="w-full" onClick={goToLogin}>
           Login

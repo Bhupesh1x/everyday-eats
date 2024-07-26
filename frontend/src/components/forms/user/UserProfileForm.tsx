@@ -15,17 +15,27 @@ import { Button } from "../../ui/button";
 import { FormHeading } from "../FormHeading";
 
 import { LoadingButton } from "../../LoadingButton";
-import { FormData } from "../../../pages/UserProfile";
+import { UserFormData } from "../../../pages/UserProfile";
 
 import { useGetUserDetails } from "../../../features/user/userQuery";
 
 type Props = {
+  title?: string;
+  isDialog?: boolean;
   isLoading: boolean;
-  onSave: (formData: FormData) => void;
-  form: UseFormReturn<FormData, any, undefined>;
+  buttonText?: string;
+  onSave: (formData: UserFormData) => void;
+  form: UseFormReturn<UserFormData, any, undefined>;
 };
 
-const UserProfileForm = ({ form, isLoading, onSave }: Props) => {
+const UserProfileForm = ({
+  form,
+  title,
+  onSave,
+  isLoading,
+  buttonText,
+  isDialog = false,
+}: Props) => {
   const { data: userDetails } = useGetUserDetails();
 
   useEffect(() => {
@@ -37,9 +47,13 @@ const UserProfileForm = ({ form, isLoading, onSave }: Props) => {
   }, [userDetails]);
 
   return (
-    <div className="lg:m-10 m-3 lg:p-10 p-5 bg-slate-300 rounded-md">
+    <div
+      className={`${
+        !isDialog ? "lg:m-10 m-3 lg:p-10 p-5 bg-slate-300 rounded-md" : ""
+      }`}
+    >
       <FormHeading
-        title="User Profile"
+        title={title || "User Profile"}
         subTitle="View and change your profile information here."
       />
 
@@ -131,7 +145,11 @@ const UserProfileForm = ({ form, isLoading, onSave }: Props) => {
           </div>
 
           <div className="!mt-10">
-            {isLoading ? <LoadingButton /> : <Button>Submit</Button>}
+            {isLoading ? (
+              <LoadingButton />
+            ) : (
+              <Button>{buttonText || "Submit"}</Button>
+            )}
           </div>
         </form>
       </Form>

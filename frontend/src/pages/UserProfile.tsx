@@ -8,7 +8,7 @@ import { useUpdateUser } from "../features/user/userQuery";
 
 import UserProfileForm from "../components/forms/user/UserProfileForm";
 
-const formSchema = z.object({
+export const userFormSchema = z.object({
   email: z.string().optional(),
   name: z.string().min(2, "Name should atleast have 2 characters"),
   address: z.string().min(6, "Address should be atleast have 6 characters"),
@@ -16,7 +16,7 @@ const formSchema = z.object({
   country: z.string().min(3, "Country should be atleast have 3 characters"),
 });
 
-export type FormData = z.infer<typeof formSchema>;
+export type UserFormData = z.infer<typeof userFormSchema>;
 
 const defaultValues = {
   name: "",
@@ -27,14 +27,14 @@ const defaultValues = {
 };
 
 function UserProfile() {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<UserFormData>({
+    resolver: zodResolver(userFormSchema),
     defaultValues,
   });
 
   const mutation = useUpdateUser();
 
-  const onSave = (data: FormData) => {
+  const onSave = (data: UserFormData) => {
     if (form.formState.isDirty) {
       mutation.mutate(
         { ...data },
