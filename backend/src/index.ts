@@ -7,6 +7,7 @@ import "dotenv/config";
 import connectDb from "./lib/connectDb";
 
 import userRoutes from "./routes/user.routes";
+import orderRoutes from "./routes/order.routes";
 import restaurantRoutes from "./routes/restaurant.routes";
 import myRestaurantRoutes from "./routes/myrestaurant.routes";
 
@@ -36,6 +37,7 @@ app.use("/health", (req: Request, res: Response) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/order", orderRoutes);
 app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/my/restaurant", myRestaurantRoutes);
 
