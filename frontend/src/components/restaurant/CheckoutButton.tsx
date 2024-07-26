@@ -15,6 +15,8 @@ import { UserFormData, userFormSchema } from "../../pages/UserProfile";
 
 type Props = {
   disabled: boolean;
+  isLoading: boolean;
+  onSave: (formData: UserFormData) => void;
 };
 
 const defaultValues = {
@@ -25,15 +27,11 @@ const defaultValues = {
   country: "",
 };
 
-export const CheckoutButton = ({ disabled }: Props) => {
+export const CheckoutButton = ({ disabled, onSave, isLoading }: Props) => {
   const form = useForm<UserFormData>({
     resolver: zodResolver(userFormSchema),
     defaultValues,
   });
-
-  const onSave = (data: UserFormData) => {
-    console.log("da", data);
-  };
 
   return (
     <Dialog>
@@ -49,7 +47,7 @@ export const CheckoutButton = ({ disabled }: Props) => {
             isDialog
             form={form}
             onSave={onSave}
-            isLoading={false}
+            isLoading={isLoading}
             title="Confirm delivery details"
             buttonText="Continue to payment"
           />

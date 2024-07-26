@@ -7,8 +7,11 @@ import { Separator } from "../ui/separator";
 
 import { useAuth } from "../../contexts/AuthContext";
 
-import { CartItem } from "../../pages/RestaurantDetails";
 import { CheckoutButton } from "./CheckoutButton";
+import { UserFormData } from "../../pages/UserProfile";
+import { CartItem } from "../../pages/RestaurantDetails";
+
+import { useCreateCheckoutSession } from "../../features/order/query";
 
 type Props = {
   restaurantId: string;
@@ -39,6 +42,30 @@ export const OrderSummary = ({
 
     return data + deliveryPrice / 100;
   }, [cartItems, deliveryPrice]);
+
+  const mutation = useCreateCheckoutSession();
+
+  const onSave = (data: UserFormData) => {
+    const checkoutData = {
+      restaurantId,
+      cartItems: cartItems.map((item) => ({
+        name: item.name,
+        menuItemId: item._id,
+        quantity: item.quantity.toString(),
+      })),
+      deliveryDetails: {
+        name: data.name,
+        city: data.city,
+        email: data.email!,
+        address: data.address,
+      },
+    };
+    mutation.mutate(checkoutData, {
+      onSuccess: ({ url }) => {
+        window.location.href = url;
+      },
+    });
+  };
 
   return (
     <div className="border border-borderPrimary shadow-md rounded-md p-5 h-fit md:mt-8 space-y-4">
@@ -79,7 +106,11 @@ export const OrderSummary = ({
       <Separator className="m-0 p-0" />
 
       {isLoggedIn && !isLoading ? (
-        <CheckoutButton disabled={!cartItems.length} />
+        <CheckoutButton
+          onSave={onSave}
+          disabled={!cartItems.length}
+          isLoading={mutation.isLoading}
+        />
       ) : (
         <Button className="w-full" onClick={goToLogin}>
           Login
