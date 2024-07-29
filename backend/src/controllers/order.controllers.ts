@@ -154,3 +154,22 @@ export const stripeWebhookHandler = async (req: Request, res: Response) => {
 
   return res.status(200).send("Order updated successfully");
 };
+
+export const getMyOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ user: req.userId })
+      .populate({
+        path: "user",
+        select: ["name", "email"],
+      })
+      .populate({
+        path: "restaurant",
+        select: ["name", "estimatedDeliveryTime"],
+      });
+
+    return res.json(orders);
+  } catch (error) {
+    console.log("getMyOrders-error", error);
+    return errorMessage(res);
+  }
+};
