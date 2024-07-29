@@ -29,8 +29,10 @@ app.use(
   })
 );
 app.use(cookieParser());
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/order/checkout/webhook", express.raw({ type: "*/*" }));
+app.use(express.json());
 
 app.use("/health", (req: Request, res: Response) => {
   res.json({ message: "Health OK!" });

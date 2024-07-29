@@ -124,3 +124,33 @@ const createSession = async (
 
   return sessionData;
 };
+
+export const stripeWebhookHandler = async (req: Request, res: Response) => {
+  let event;
+  try {
+    const sig = req.headers["stripe-signature"];
+    event = stripe.webhooks.constructEvent(
+      req.body,
+      sig as string,
+      process.env.STRIPE_WEBHOOK_SECRET as string
+    );
+  } catch (error: any) {
+    console.log("stripeWebhookHandler-error", error);
+    return errorMessage(res, `Webhook-error-${error.message}`, 400);
+  }
+
+  if (event.type === "checkout.session.completed") {
+    const order = await Order.findById(event.data.object.metadata?.orderId);
+
+    if (!order) {
+      return errorMessage(res, "Order not found", 404);
+    }
+
+    order.totalAmount = event.data.object.amount_total;
+    order.status = "paid";
+
+    await order.save();
+  }
+
+  return res.status(200).send("Order updated successfully");
+};
