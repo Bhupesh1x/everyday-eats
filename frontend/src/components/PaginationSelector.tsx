@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import {
   Pagination,
   PaginationContent,
@@ -18,6 +20,24 @@ export const PaginationSelector = ({
   totalPages,
   onPageChange,
 }: Props) => {
+  const prevThreePageNos = useMemo(
+    () =>
+      Array.from({ length: 3 }, (_, index) => page - 1 - index)
+        .filter((val) => val > 0)
+        .reverse(),
+    [page]
+  );
+
+  const lastThreePageNos = useMemo(
+    () =>
+      Array.from({ length: 3 }, (_, index) => page + index).filter(
+        (val) => val <= totalPages
+      ),
+    [page, totalPages]
+  );
+
+  const paginationArray = [...prevThreePageNos, ...lastThreePageNos];
+
   return (
     <Pagination>
       <PaginationContent>
@@ -26,13 +46,13 @@ export const PaginationSelector = ({
             <PaginationPrevious onClick={() => onPageChange(page - 1)} />
           </PaginationItem>
         )}
-        {new Array(totalPages).fill(0).map((_, index) => (
-          <PaginationItem key={index}>
+        {paginationArray?.map((item) => (
+          <PaginationItem key={item}>
             <PaginationLink
-              isActive={page === index + 1}
-              onClick={() => onPageChange(index + 1)}
+              isActive={page === item}
+              onClick={() => onPageChange(item)}
             >
-              {index + 1}
+              {item}
             </PaginationLink>
           </PaginationItem>
         ))}
