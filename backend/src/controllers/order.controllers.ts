@@ -2,6 +2,8 @@ import Stripe from "stripe";
 import { Request, Response } from "express";
 
 import { errorMessage } from "../lib/utils";
+
+import { Order } from "../models/order.model";
 import { MenuItemType, Restaurant } from "../models/restaurant.model";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY!);
@@ -34,9 +36,17 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
 
     const lineItems = createLineItems(body, restaurant.menuItems);
 
+    const order = await Order.create({
+      cartItems: body.cartItems,
+      deliveryDetails: body.deliveryDetails,
+      restaurant: restaurant._id,
+      status: "placed",
+      user: req.userId,
+    });
+
     const session = await createSession(
       lineItems,
-      "ORDER_ID",
+      order._id.toString(),
       restaurant.deliveryPrice,
       restaurant._id.toString()
     );
@@ -45,6 +55,7 @@ export const createCheckoutSession = async (req: Request, res: Response) => {
       return errorMessage(res, "Error creating stripe session");
     }
 
+    await order.save();
     res.json({ url: session.url });
   } catch (error: any) {
     console.log("createCheckoutSession-error", error);
