@@ -1,6 +1,8 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
-import { OrderType } from "../../types";
+import { LoadingButton } from "../LoadingButton";
+
+import { OrderStatus, OrderType } from "../../types";
 
 import {
   Select,
@@ -10,15 +12,18 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Label } from "../ui/label";
+import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 
 import { ORDER_STATUS } from "../../lib/constants";
+import { useUpdateOrderStatus } from "../../features/order/query";
 
 type Props = {
   order: OrderType;
 };
 
 export const OrderItemCard = ({ order }: Props) => {
+  const [status, setStatus] = useState(order.status || "");
   const time = useMemo(() => {
     const date = new Date(order.createdAt);
 
@@ -29,6 +34,15 @@ export const OrderItemCard = ({ order }: Props) => {
 
     return `${hour}:${paddedMinutes}`;
   }, [order.createdAt]);
+
+  const mutation = useUpdateOrderStatus();
+
+  const handleUpdate = () => {
+    mutation.mutate({
+      id: order._id,
+      status: status,
+    });
+  };
 
   return (
     <div className="border border-primary/50 shadow-sm py-3 px-4 rounded-md my-6">
@@ -69,7 +83,11 @@ export const OrderItemCard = ({ order }: Props) => {
       <div>
         <Label htmlFor="status">What is the status of the order?</Label>
 
-        <Select>
+        <Select
+          value={status}
+          disabled={mutation.isLoading}
+          onValueChange={(value: OrderStatus) => setStatus(value)}
+        >
           <SelectTrigger className="mt-2">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
@@ -81,6 +99,18 @@ export const OrderItemCard = ({ order }: Props) => {
             ))}
           </SelectContent>
         </Select>
+
+        {mutation.isLoading ? (
+          <LoadingButton />
+        ) : (
+          <Button
+            className="my-3 mt-6"
+            disabled={status === order.status}
+            onClick={handleUpdate}
+          >
+            Update
+          </Button>
+        )}
       </div>
     </div>
   );

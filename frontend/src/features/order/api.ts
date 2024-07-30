@@ -62,3 +62,25 @@ export const getMyRestaurantOrdersApi = async (): Promise<OrderType[]> => {
 
   return await res.json();
 };
+
+type UpdateOrderStatusRequest = {
+  id: string;
+  status: string;
+};
+
+export const updateOrderStatusApi = async (data: UpdateOrderStatusRequest) => {
+  const res = await fetch(`${API_BASE_URL}/api/order/${data.id}/status`, {
+    method: "PUT",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ status: data.status }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to update order status");
+  }
+
+  return await res.json();
+};

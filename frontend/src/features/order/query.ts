@@ -1,10 +1,11 @@
 import { toast } from "sonner";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 import {
   getMyOrdersApi,
   createCheckoutSession,
   getMyRestaurantOrdersApi,
+  updateOrderStatusApi,
 } from "./api";
 
 export const useCreateCheckoutSession = () => {
@@ -34,4 +35,20 @@ export const useGetMyRestaurantOrders = () => {
   });
 
   return query;
+};
+
+export const useUpdateOrderStatus = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: updateOrderStatusApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["get-my-restaurant-orders"]);
+      toast.success("Order status updated successfully");
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+
+  return mutation;
 };
