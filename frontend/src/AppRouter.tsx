@@ -9,6 +9,7 @@ const SignUpPage = LazyLoad(() => import("./pages/SignUp"));
 const SearchPage = LazyLoad(() => import("./pages/SearchPage"));
 const VerifyEmailPage = LazyLoad(() => import("./pages/VerifyEmail"));
 const UserProfilePage = LazyLoad(() => import("./pages/UserProfile"));
+const OrderStatusPage = LazyLoad(() => import("./pages/OrderStatusPage"));
 const RestaurantDetails = LazyLoad(() => import("./pages/RestaurantDetails"));
 const ManageRestaurantPage = LazyLoad(() => import("./pages/ManageRestaurant"));
 
@@ -29,6 +30,7 @@ function AppRouter() {
       <Route element={<ProtectedRoute />}>
         <Route path="/user-profile" element={<UserProfilePage />} />
         <Route path="/my-restaurant" element={<ManageRestaurantPage />} />
+        <Route path="/order-status" element={<OrderStatusPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" />} />
