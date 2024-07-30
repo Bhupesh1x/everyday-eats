@@ -173,3 +173,26 @@ export const getMyOrders = async (req: Request, res: Response) => {
     return errorMessage(res);
   }
 };
+
+export const getMyRestaurantOrders = async (req: Request, res: Response) => {
+  try {
+    const restaurant = await Restaurant.findOne({ user: req.userId });
+
+    if (!restaurant) {
+      return errorMessage(res, "User restaurant not found", 404);
+    }
+
+    const orders = await Order.find({ restaurant: restaurant._id })
+      .populate({
+        path: "user",
+      })
+      .populate({
+        path: "restaurant",
+      });
+
+    return res.json(orders);
+  } catch (error) {
+    console.log("getMyRestaurantOrders-error", error);
+    return errorMessage(res);
+  }
+};
