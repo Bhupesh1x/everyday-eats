@@ -49,3 +49,16 @@ export const getMyOrdersApi = async (): Promise<OrderType[]> => {
 
   return await res.json();
 };
+
+export const getMyRestaurantOrdersApi = async (): Promise<OrderType[]> => {
+  const res = await fetch(`${API_BASE_URL}/api/order/my/orders`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res) {
+    throw new Error("Failed to get orders");
+  }
+
+  return await res.json();
+};
