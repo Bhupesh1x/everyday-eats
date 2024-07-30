@@ -1,7 +1,7 @@
 import { toast } from "sonner";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 
-import { createCheckoutSession } from "./api";
+import { createCheckoutSession, getMyOrdersApi } from "./api";
 
 export const useCreateCheckoutSession = () => {
   const mutation = useMutation({
@@ -12,4 +12,13 @@ export const useCreateCheckoutSession = () => {
   });
 
   return mutation;
+};
+
+export const useGetMyOrders = () => {
+  const query = useQuery({
+    queryKey: ["get-my-orders"],
+    queryFn: getMyOrdersApi,
+  });
+
+  return query;
 };

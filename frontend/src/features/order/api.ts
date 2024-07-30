@@ -1,3 +1,5 @@
+import { OrderType } from "../../types";
+
 import { API_BASE_URL } from "../../lib/utils";
 
 type CheckoutSessionRequest = {
@@ -30,6 +32,19 @@ export const createCheckoutSession = async (
   if (!res.ok) {
     const error = await res.json();
     throw new Error(error?.message);
+  }
+
+  return await res.json();
+};
+
+export const getMyOrdersApi = async (): Promise<OrderType[]> => {
+  const res = await fetch(`${API_BASE_URL}/api/order`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to get orders");
   }
 
   return await res.json();
