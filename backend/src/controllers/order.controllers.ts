@@ -164,7 +164,7 @@ export const getMyOrders = async (req: Request, res: Response) => {
       })
       .populate({
         path: "restaurant",
-        select: ["name", "estimatedDeliveryTime"],
+        select: ["name", "estimatedDeliveryTime", "imageUrl"],
       });
 
     return res.json(orders);
