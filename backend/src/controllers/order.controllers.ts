@@ -196,3 +196,35 @@ export const getMyRestaurantOrders = async (req: Request, res: Response) => {
     return errorMessage(res);
   }
 };
+
+export const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return errorMessage(res, "Order not found", 404);
+    }
+
+    const restaurant = await Restaurant.findById(order.restaurant);
+
+    if (!restaurant) {
+      return errorMessage(res, "Order not found", 404);
+    }
+
+    if (restaurant.user?.toString() !== req.userId) {
+      return errorMessage(res, "Order not found", 404);
+    }
+
+    order.status = status;
+
+    await order.save();
+
+    res.json({ message: "Status updated successfully" });
+  } catch (error) {
+    console.log("updateOrderStatus-error", error);
+    return errorMessage(res);
+  }
+};
